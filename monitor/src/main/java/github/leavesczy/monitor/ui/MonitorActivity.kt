@@ -3,35 +3,37 @@ package github.leavesczy.monitor.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import github.leavesczy.monitor.Monitor
 import github.leavesczy.monitor.R
 import github.leavesczy.monitor.adapter.MonitorAdapter
+import github.leavesczy.monitor.adapter.OnItemClickListener
 import github.leavesczy.monitor.db.HttpInformation
+import github.leavesczy.monitor.db.MonitorDatabase
+import github.leavesczy.monitor.provider.NotificationProvider
 import github.leavesczy.monitor.viewmodel.MonitorViewModel
+import kotlin.concurrent.thread
 
 /**
  * @Author: leavesCZY
- * @Date: 2020/11/8 15:58
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
-class MonitorActivity : AppCompatActivity() {
+internal class MonitorActivity : AppCompatActivity() {
 
     private val monitorViewModel by lazy {
-        ViewModelProvider(this).get(MonitorViewModel::class.java).apply {
-            allRecordLiveData.observe(this@MonitorActivity, Observer {
+        ViewModelProvider(this)[MonitorViewModel::class.java].apply {
+            allRecordLiveData.observe(this@MonitorActivity) {
                 monitorAdapter.setData(it)
-            })
+            }
         }
     }
 
-    private val monitorAdapter = MonitorAdapter()
+    private val monitorAdapter by lazy {
+        MonitorAdapter(context = this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +44,11 @@ class MonitorActivity : AppCompatActivity() {
 
     private fun initView() {
         setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val tvToolbarTitle = findViewById<TextView>(R.id.tvToolbarTitle)
-        tvToolbarTitle.text = getString(R.string.monitor)
-        monitorAdapter.clickListener = object : MonitorAdapter.OnClickListener {
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setTitle(R.string.monitor_lib_name)
+        }
+        monitorAdapter.clickListener = object : OnItemClickListener {
             override fun onClick(position: Int, model: HttpInformation) {
                 MonitorDetailsActivity.navTo(this@MonitorActivity, model.id)
             }
@@ -63,9 +66,13 @@ class MonitorActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.clear -> {
-                Monitor.clearCache()
-                Monitor.clearNotification()
+                thread {
+                    MonitorDatabase.instance.monitorDao.deleteAll()
+                }
+                NotificationProvider.clearBuffer()
+                NotificationProvider.dismiss()
             }
+
             android.R.id.home -> {
                 finish()
             }

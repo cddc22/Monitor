@@ -1,30 +1,29 @@
-# Monitor   [![](https://jitpack.io/v/leavesCZY/Monitor.svg)](https://jitpack.io/#leavesCZY/Monitor)
+# Monitor [![](https://jitpack.io/v/leavesCZY/Monitor.svg)](https://jitpack.io/#leavesCZY/Monitor)
 
-为 OkHttp / Retrofit 提供可视化抓包界面，自动记录并持久化缓存所有的网络请求信息
+只需为 OkHttpClient 添加 MonitorInterceptor，就可以自动记录并缓存所有的网络请求信息，并提供可视化页面进行查看
 
-![](https://s1.ax1x.com/2020/10/21/BCJpz6.gif)
+```kotlin
+val okHttpClient = OkHttpClient.Builder()
+    .addInterceptor(MonitorInterceptor(context = context))
+    .build()
+```
 
-同时引入 debug 和 release 版本的依赖。release 版本的 MonitorInterceptor 不会做任何操作，既避免了信息泄露，也不会增加 Apk 体积大小
+同时引入 debug 和 release 版本的依赖，release 版本的 MonitorInterceptor 不会做任何操作
 
-```groovy
-allprojects {
+```kotlin
+dependencyResolutionManagement {
     repositories {
-        maven { url 'https://jitpack.io' }
+        maven {
+            setUrl("https://jitpack.io")
+        }
     }
 }
 
 dependencies {
-    debugImplementation 'com.github.leavesCZY.Monitor:monitor:1.1.6'
-    releaseImplementation 'com.github.leavesCZY.Monitor:monitor-no-op:1.1.6'
+    val latestVersion = "x.x.x"
+    debugImplementation("com.github.leavesCZY.Monitor:monitor:${latestVersion}")
+    releaseImplementation("com.github.leavesCZY.Monitor:monitor-no-op:${latestVersion}")
 }
 ```
 
-只需为 OkHttpClient 添加 MonitorInterceptor 即可
-
-```groovy
-val okHttpClient = OkHttpClient.Builder()
-    .addInterceptor(MonitorInterceptor(context = application))
-    .build()
-```
-
-> Monitor 的灵感来源于另一个开源项目：[Chuck](https://github.com/jgilfelt/chuck)
+![](https://github.com/leavesCZY/Monitor/assets/30774063/8cff9168-8ba2-4bb4-9c38-859128e45f23)

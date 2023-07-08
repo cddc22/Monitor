@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -20,11 +18,10 @@ import github.leavesczy.monitor.viewmodel.MonitorDetailViewModel
 
 /**
  * @Author: leavesCZY
- * @Date: 2020/11/8 17:04
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
-class MonitorDetailsActivity : AppCompatActivity() {
+internal class MonitorDetailsActivity : AppCompatActivity() {
 
     companion object {
 
@@ -38,32 +35,20 @@ class MonitorDetailsActivity : AppCompatActivity() {
 
     }
 
-    private val tvToolbarTitle by lazy {
-        findViewById<TextView>(R.id.tvToolbarTitle)
-    }
-
-    private val toolbar by lazy {
-        findViewById<Toolbar>(R.id.toolbar)
-    }
-
-    private val tabLayout by lazy {
-        findViewById<TabLayout>(R.id.tabLayout)
-    }
-
     private val viewPager by lazy {
         findViewById<ViewPager2>(R.id.viewPager)
     }
 
     private val monitorDetailViewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return MonitorDetailViewModel(intent.getLongExtra(KEY_ID, 0)) as T
             }
-        }).get(MonitorDetailViewModel::class.java).apply {
-            recordLiveData.observe(this@MonitorDetailsActivity, { httpInformation ->
-                tvToolbarTitle.text =
+        })[MonitorDetailViewModel::class.java].apply {
+            recordLiveData.observe(this@MonitorDetailsActivity) { httpInformation ->
+                supportActionBar?.title =
                     String.format("%s  %s", httpInformation.method, httpInformation.path)
-            })
+            }
         }
     }
 
@@ -75,11 +60,12 @@ class MonitorDetailsActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val monitorFragmentAdapter = MonitorFragmentAdapter(this)
         viewPager.adapter = monitorFragmentAdapter
         viewPager.offscreenPageLimit = monitorFragmentAdapter.itemCount
+        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         val tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = monitorFragmentAdapter.getTitle(position)
         }
@@ -99,6 +85,7 @@ class MonitorDetailsActivity : AppCompatActivity() {
                     share(FormatUtils.getShareText(httpInformation))
                 }
             }
+
             android.R.id.home -> {
                 finish()
             }

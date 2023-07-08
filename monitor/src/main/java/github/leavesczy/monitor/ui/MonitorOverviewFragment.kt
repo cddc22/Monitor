@@ -13,7 +13,6 @@ import github.leavesczy.monitor.viewmodel.MonitorDetailViewModel
 
 /**
  * @Author: leavesCZY
- * @Date: 2020/11/8 14:44
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
@@ -42,13 +41,13 @@ internal class MonitorOverviewFragment : Fragment() {
     private lateinit var tvTotalSize: TextView
 
     private val monitorDetailViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(MonitorDetailViewModel::class.java).apply {
-            recordLiveData.observe(viewLifecycleOwner, { information ->
+        ViewModelProvider(requireActivity())[MonitorDetailViewModel::class.java].apply {
+            recordLiveData.observe(viewLifecycleOwner) { information ->
                 information?.apply {
                     tvUrl.text = url
                     tvMethod.text = method
                     tvProtocol.text = protocol
-                    tvStatus.text = status.toString()
+                    tvStatus.text = httpStatus.toString()
                     tvResponse.text = responseSummaryText
                     tvSsl.text = if (isSsl) "Yes" else "No"
                     tvTlsVersion.text = responseTlsVersion
@@ -60,7 +59,7 @@ internal class MonitorOverviewFragment : Fragment() {
                     tvResponseSize.text = FormatUtils.formatBytes(responseContentLength)
                     tvTotalSize.text = totalSizeFormat
                 }
-            })
+            }
         }
     }
 

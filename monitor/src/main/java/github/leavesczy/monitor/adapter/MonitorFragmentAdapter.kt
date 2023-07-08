@@ -9,7 +9,6 @@ import github.leavesczy.monitor.ui.MonitorResponseFragment
 
 /**
  * @Author: leavesCZY
- * @Date: 2020/11/8 14:56
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
@@ -25,12 +24,15 @@ internal class MonitorFragmentAdapter(fragmentActivity: FragmentActivity) :
             0 -> {
                 MonitorOverviewFragment.newInstance()
             }
+
             1 -> {
                 MonitorRequestFragment.newInstance()
             }
+
             2 -> {
                 MonitorResponseFragment.newInstance()
             }
+
             else -> {
                 throw IllegalArgumentException()
             }
@@ -42,12 +44,15 @@ internal class MonitorFragmentAdapter(fragmentActivity: FragmentActivity) :
             0 -> {
                 "Overview"
             }
+
             1 -> {
                 "Request"
             }
+
             2 -> {
                 "Response"
             }
+
             else -> {
                 throw IllegalArgumentException()
             }

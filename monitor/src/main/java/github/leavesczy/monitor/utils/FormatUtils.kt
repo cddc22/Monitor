@@ -2,7 +2,7 @@ package github.leavesczy.monitor.utils
 
 import github.leavesczy.monitor.db.HttpHeader
 import github.leavesczy.monitor.db.HttpInformation
-import github.leavesczy.monitor.holder.SerializableHolder
+import github.leavesczy.monitor.provider.SerializableProvider
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import org.xml.sax.SAXParseException
@@ -11,7 +11,8 @@ import java.io.IOException
 import java.io.StringWriter
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import javax.xml.XMLConstants
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
@@ -25,7 +26,6 @@ import kotlin.math.pow
 
 /**
  * @Author: leavesCZY
- * @Date: 2020/11/7 21:15
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
@@ -94,12 +94,15 @@ internal object FormatUtils {
             body.isBlank() -> {
                 ""
             }
+
             contentType?.contains("json", true) == true -> {
-                SerializableHolder.setPrettyPrinting(body)
+                SerializableProvider.setPrettyPrinting(body)
             }
+
             contentType?.contains("xml", true) == true -> {
                 formatXml(body)
             }
+
             else -> {
                 body
             }
@@ -144,7 +147,7 @@ internal object FormatUtils {
         text += "\n"
         text += "Method: " + httpInformation.method + "\n"
         text += "Protocol: " + httpInformation.protocol + "\n"
-        text += "Status: " + httpInformation.status.toString() + "\n"
+        text += "Status: " + httpInformation.httpStatus.toString() + "\n"
         text += "Response: " + httpInformation.responseSummaryText + "\n"
         text += "SSL: " + httpInformation.isSsl + "\n"
         text += "TlsVersion: " + httpInformation.responseTlsVersion + "\n"

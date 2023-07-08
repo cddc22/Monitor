@@ -13,7 +13,6 @@ import github.leavesczy.monitor.viewmodel.MonitorDetailViewModel
 
 /**
  * @Author: leavesCZY
- * @Date: 2020/11/7 16:22
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
@@ -31,8 +30,8 @@ internal class MonitorResponseFragment : Fragment() {
     private lateinit var tvBody: TextView
 
     private val monitorDetailViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(MonitorDetailViewModel::class.java).apply {
-            recordLiveData.observe(viewLifecycleOwner, { information ->
+        ViewModelProvider(requireActivity())[MonitorDetailViewModel::class.java].apply {
+            recordLiveData.observe(viewLifecycleOwner) { information ->
                 val headersString = information.getResponseHeadersString(true)
                 if (headersString.isBlank()) {
                     tvHeaders.visibility = View.GONE
@@ -41,7 +40,7 @@ internal class MonitorResponseFragment : Fragment() {
                     tvHeaders.text = Html.fromHtml(headersString)
                 }
                 tvBody.text = information.responseBodyFormat
-            })
+            }
         }
     }
 

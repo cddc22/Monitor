@@ -4,8 +4,8 @@
     <color name="monitor_page_background">#FFFFFFFF</color>
     <color name="monitor_status_success">#FF000000</color>
     <color name="monitor_status_requested">#FF81877F</color>
-    <color name="monitor_status_error">#FFC62828</color>
-    <color name="monitor_status_300">#FFC62828</color>
-    <color name="monitor_status_400">#FFC62828</color>
-    <color name="monitor_status_500">#FFC62828</color>
+    <color name="monitor_status_error">#FFF80404</color>
+    <color name="monitor_status_300">#FFF80404</color>
+    <color name="monitor_status_400">#FFF80404</color>
+    <color name="monitor_status_500">#FFF80404</color>
 </resources>

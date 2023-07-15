@@ -14,7 +14,7 @@ import github.leavesczy.monitor.provider.ContextProvider
  */
 @Database(
     entities = [HttpInformation::class],
-    version = 12,
+    version = 13,
     exportSchema = false
 )
 @TypeConverters(MonitorConverters::class)

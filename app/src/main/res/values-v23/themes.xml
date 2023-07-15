@@ -2,8 +2,6 @@
 <resources>
 
     <style name="Theme.Monitor.Samples" parent="Theme.Monitor.Samples.Base">
-        <item name="android:statusBarColor">@color/monitor_samples_top_bar</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
 

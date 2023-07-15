@@ -10,7 +10,6 @@ android {
     compileSdk = 33
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -43,9 +42,6 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("release") {
-//                groupId = "com.github.leavesCZY.Monitor"
-//                artifactId = "monitor"
-//                version = "1.0.0"
                 from(components["release"])
             }
         }

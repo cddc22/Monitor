@@ -1,47 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <Button
+        android:id="@+id/btnDoApiServiceFirst"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/monitor_samples_top_bar">
+        android:layout_margin="20dp"
+        android:text="发起网络请求"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
+    <Button
+        android:id="@+id/btnDoApiServiceSecond"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnDoApiServiceFirst"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="发起网络请求"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/btnDoApiServiceSecond"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="发起网络请求"
-            android:textAllCaps="false" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="发起网络请求"
+        android:textAllCaps="false"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

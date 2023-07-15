@@ -66,8 +66,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setTitle(R.string.app_name)
         findViewById<View>(R.id.btnDoApiServiceFirst).setOnClickListener {
             showToast("已发起请求，请查看消息通知栏")
             doApiServiceFirst()

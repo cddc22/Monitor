@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.TimeZone
@@ -82,9 +84,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-//    val latestVersion = "14f8c7a7b1"
+//    val latestVersion = "1.2.0"
 //    debugImplementation("com.github.leavesCZY.Monitor:monitor:${latestVersion}")
 //    releaseImplementation("com.github.leavesCZY.Monitor:monitor-no-op:${latestVersion}")
-    implementation(project(":monitor"))
-//    implementation(project(":monitor-no-op"))
+    debugImplementation(project(":monitor"))
+    releaseImplementation(project(":monitor-no-op"))
 }

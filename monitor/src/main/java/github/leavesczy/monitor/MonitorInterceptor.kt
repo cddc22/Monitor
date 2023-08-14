@@ -22,7 +22,7 @@ import okio.Buffer
 class MonitorInterceptor(context: Context) : Interceptor {
 
     init {
-        ContextProvider.inject(context = context)
+        ContextProvider.inject(context = context.applicationContext)
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

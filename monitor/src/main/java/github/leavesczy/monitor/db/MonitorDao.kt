@@ -21,10 +21,10 @@ internal interface MonitorDao {
     fun update(model: HttpInformation)
 
     @Query("SELECT * FROM ${MonitorDatabase.MonitorTableName} WHERE id =:id")
-    fun queryRecordObservable(id: Long): LiveData<HttpInformation>
+    fun queryRecord(id: Long): LiveData<HttpInformation>
 
     @Query("SELECT * FROM ${MonitorDatabase.MonitorTableName} order by id desc limit :limit")
-    fun queryAllRecordObservable(limit: Int): LiveData<List<HttpInformation>>
+    fun queryRecord(limit: Int): LiveData<List<HttpInformation>>
 
     @Query("DELETE FROM ${MonitorDatabase.MonitorTableName}")
     fun deleteAll()

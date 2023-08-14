@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import github.leavesczy.monitor.R
 import github.leavesczy.monitor.adapter.MonitorAdapter
-import github.leavesczy.monitor.adapter.OnItemClickListener
+import github.leavesczy.monitor.adapter.OnMonitorItemClickListener
 import github.leavesczy.monitor.db.HttpInformation
 import github.leavesczy.monitor.db.MonitorDatabase
+import github.leavesczy.monitor.logic.MonitorViewModel
 import github.leavesczy.monitor.provider.NotificationProvider
-import github.leavesczy.monitor.viewmodel.MonitorViewModel
 import kotlin.concurrent.thread
 
 /**
@@ -23,15 +23,11 @@ import kotlin.concurrent.thread
  */
 internal class MonitorActivity : AppCompatActivity() {
 
-    private val monitorViewModel by lazy {
-        ViewModelProvider(this)[MonitorViewModel::class.java].apply {
-            allRecordLiveData.observe(this@MonitorActivity) {
-                monitorAdapter.setData(it)
-            }
-        }
+    private val monitorViewModel by lazy(mode = LazyThreadSafetyMode.NONE) {
+        ViewModelProvider(this)[MonitorViewModel::class.java]
     }
 
-    private val monitorAdapter by lazy {
+    private val monitorAdapter by lazy(mode = LazyThreadSafetyMode.NONE) {
         MonitorAdapter(context = this)
     }
 
@@ -39,7 +35,7 @@ internal class MonitorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monitor)
         initView()
-        monitorViewModel.init()
+        initObserver()
     }
 
     private fun initView() {
@@ -48,7 +44,7 @@ internal class MonitorActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setTitle(R.string.monitor_lib_name)
         }
-        monitorAdapter.clickListener = object : OnItemClickListener {
+        monitorAdapter.clickListener = object : OnMonitorItemClickListener {
             override fun onClick(position: Int, model: HttpInformation) {
                 MonitorDetailsActivity.navTo(this@MonitorActivity, model.id)
             }
@@ -56,6 +52,12 @@ internal class MonitorActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = monitorAdapter
+    }
+
+    private fun initObserver() {
+        monitorViewModel.allRecordLiveData.observe(this@MonitorActivity) {
+            monitorAdapter.setData(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

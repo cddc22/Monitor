@@ -3,22 +3,19 @@ package github.leavesczy.monitor.provider
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.google.gson.internal.bind.DateTypeAdapter
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.Date
 
 /**
  * @Author: leavesCZY
  * @Desc:
  * @Github：https://github.com/leavesCZY
  */
-internal object SerializableProvider {
+internal object JsonProvider {
 
     private var gson = GsonBuilder()
         .setPrettyPrinting()
         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-        .registerTypeAdapter(Date::class.java, DateTypeAdapter())
         .create()
 
     fun setPrettyPrinting(json: String): String {

@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import github.leavesczy.monitor.R
-import github.leavesczy.monitor.viewmodel.MonitorDetailViewModel
+import github.leavesczy.monitor.logic.MonitorDetailViewModel
 
 /**
  * @Author: leavesCZY
@@ -29,19 +29,8 @@ internal class MonitorResponseFragment : Fragment() {
 
     private lateinit var tvBody: TextView
 
-    private val monitorDetailViewModel by lazy {
-        ViewModelProvider(requireActivity())[MonitorDetailViewModel::class.java].apply {
-            recordLiveData.observe(viewLifecycleOwner) { information ->
-                val headersString = information.getResponseHeadersString(true)
-                if (headersString.isBlank()) {
-                    tvHeaders.visibility = View.GONE
-                } else {
-                    tvHeaders.visibility = View.VISIBLE
-                    tvHeaders.text = Html.fromHtml(headersString)
-                }
-                tvBody.text = information.responseBodyFormat
-            }
-        }
+    private val monitorDetailViewModel by lazy(mode = LazyThreadSafetyMode.NONE) {
+        ViewModelProvider(requireActivity())[MonitorDetailViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -57,7 +46,16 @@ internal class MonitorResponseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        monitorDetailViewModel.init()
+        monitorDetailViewModel.recordLiveData.observe(viewLifecycleOwner) { information ->
+            val headersString = information.getResponseHeadersString(true)
+            if (headersString.isBlank()) {
+                tvHeaders.visibility = View.GONE
+            } else {
+                tvHeaders.visibility = View.VISIBLE
+                tvHeaders.text = Html.fromHtml(headersString)
+            }
+            tvBody.text = information.responseBodyFormat
+        }
     }
 
 }

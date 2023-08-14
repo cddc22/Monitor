@@ -14,10 +14,10 @@ import github.leavesczy.monitor.provider.ContextProvider
  */
 @Database(
     entities = [HttpInformation::class],
-    version = 13,
-    exportSchema = false
+    version = 14,
+    exportSchema = true
 )
-@TypeConverters(MonitorConverters::class)
+@TypeConverters(MonitorTypeConverter::class)
 internal abstract class MonitorDatabase : RoomDatabase() {
 
     companion object {
@@ -35,13 +35,13 @@ internal abstract class MonitorDatabase : RoomDatabase() {
                     if (cache != null) {
                         return@synchronized cache
                     }
-                    val db = create(context = ContextProvider.context)
+                    val db = createDb(context = ContextProvider.context)
                     monitorDatabase = db
                     return@synchronized db
                 }
             }
 
-        private fun create(context: Context): MonitorDatabase {
+        private fun createDb(context: Context): MonitorDatabase {
             return Room.databaseBuilder(
                 context,
                 MonitorDatabase::class.java,

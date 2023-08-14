@@ -1,4 +1,4 @@
-package github.leavesczy.monitor.viewmodel
+package github.leavesczy.monitor.logic
 
 import androidx.lifecycle.ViewModel
 import github.leavesczy.monitor.db.MonitorDatabase
@@ -10,16 +10,8 @@ import github.leavesczy.monitor.db.MonitorDatabase
  */
 internal class MonitorDetailViewModel(id: Long) : ViewModel() {
 
-    val recordLiveData by lazy {
-        MonitorDatabase.instance.monitorDao.queryRecordObservable(id)
-    }
-
-    fun init() {
-
-    }
-
-    fun queryRecordById() {
-
+    val recordLiveData by lazy(mode = LazyThreadSafetyMode.NONE) {
+        MonitorDatabase.instance.monitorDao.queryRecord(id)
     }
 
 }

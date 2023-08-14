@@ -31,7 +31,7 @@ internal object ResponseUtils {
             }
             return true
         } catch (_: EOFException) {
-            return false // Truncated UTF-8 sequence.
+            return false
         }
     }
 

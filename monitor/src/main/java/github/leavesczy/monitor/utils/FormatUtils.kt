@@ -2,7 +2,7 @@ package github.leavesczy.monitor.utils
 
 import github.leavesczy.monitor.db.HttpHeader
 import github.leavesczy.monitor.db.HttpInformation
-import github.leavesczy.monitor.provider.SerializableProvider
+import github.leavesczy.monitor.provider.JsonProvider
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import org.xml.sax.SAXParseException
@@ -59,7 +59,8 @@ internal object FormatUtils {
         return formatByteCount(bytes, true)
     }
 
-    fun formatByteCount(bytes: Long, si: Boolean): String {
+    @Suppress("SameParameterValue")
+    private fun formatByteCount(bytes: Long, si: Boolean): String {
         val unit = if (si) 1000 else 1024
         if (bytes < unit) {
             return "$bytes B"
@@ -96,7 +97,7 @@ internal object FormatUtils {
             }
 
             contentType?.contains("json", true) == true -> {
-                SerializableProvider.setPrettyPrinting(body)
+                JsonProvider.setPrettyPrinting(body)
             }
 
             contentType?.contains("xml", true) == true -> {

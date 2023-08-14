@@ -13,8 +13,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import github.leavesczy.monitor.R
 import github.leavesczy.monitor.adapter.MonitorFragmentAdapter
+import github.leavesczy.monitor.logic.MonitorDetailViewModel
 import github.leavesczy.monitor.utils.FormatUtils
-import github.leavesczy.monitor.viewmodel.MonitorDetailViewModel
 
 /**
  * @Author: leavesCZY
@@ -35,28 +35,23 @@ internal class MonitorDetailsActivity : AppCompatActivity() {
 
     }
 
-    private val viewPager by lazy {
+    private val viewPager by lazy(mode = LazyThreadSafetyMode.NONE) {
         findViewById<ViewPager2>(R.id.viewPager)
     }
 
-    private val monitorDetailViewModel by lazy {
+    private val monitorDetailViewModel by lazy(mode = LazyThreadSafetyMode.NONE) {
         ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return MonitorDetailViewModel(intent.getLongExtra(KEY_ID, 0)) as T
             }
-        })[MonitorDetailViewModel::class.java].apply {
-            recordLiveData.observe(this@MonitorDetailsActivity) { httpInformation ->
-                supportActionBar?.title =
-                    String.format("%s  %s", httpInformation.method, httpInformation.path)
-            }
-        }
+        })[MonitorDetailViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_monitor_details)
         initView()
-        monitorDetailViewModel.queryRecordById()
+        initObserver()
     }
 
     private fun initView() {
@@ -70,6 +65,12 @@ internal class MonitorDetailsActivity : AppCompatActivity() {
             tab.text = monitorFragmentAdapter.getTitle(position)
         }
         tabLayoutMediator.attach()
+    }
+
+    private fun initObserver() {
+        monitorDetailViewModel.recordLiveData.observe(this) {
+            supportActionBar?.title = String.format("%s  %s", it.method, it.path)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -1,4 +1,4 @@
-package github.leavesczy.monitor.viewmodel
+package github.leavesczy.monitor.logic
 
 import androidx.lifecycle.ViewModel
 import github.leavesczy.monitor.db.MonitorDatabase
@@ -12,18 +12,12 @@ internal class MonitorViewModel : ViewModel() {
 
     companion object {
 
-        private const val LIMIT = 300
+        private const val COUNT_LIMIT = 300
 
     }
 
-    val allRecordLiveData by lazy {
-        MonitorDatabase.instance.monitorDao.queryAllRecordObservable(
-            LIMIT
-        )
-    }
-
-    fun init() {
-
+    val allRecordLiveData by lazy(mode = LazyThreadSafetyMode.NONE) {
+        MonitorDatabase.instance.monitorDao.queryRecord(COUNT_LIMIT)
     }
 
 }

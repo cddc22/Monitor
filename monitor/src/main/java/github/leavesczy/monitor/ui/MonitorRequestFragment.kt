@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import github.leavesczy.monitor.R
-import github.leavesczy.monitor.viewmodel.MonitorDetailViewModel
+import github.leavesczy.monitor.logic.MonitorDetailViewModel
 
 /**
  * @Author: leavesCZY
@@ -30,21 +30,8 @@ internal class MonitorRequestFragment : Fragment() {
 
     private lateinit var tvBody: TextView
 
-    private val monitorDetailViewModel by lazy {
-        ViewModelProvider(requireActivity())[MonitorDetailViewModel::class.java].apply {
-            recordLiveData.observe(viewLifecycleOwner) { httpInformation ->
-                if (httpInformation != null) {
-                    val headersString = httpInformation.getRequestHeadersString(true)
-                    if (headersString.isBlank()) {
-                        tvHeaders.visibility = View.GONE
-                    } else {
-                        tvHeaders.visibility = View.VISIBLE
-                        tvHeaders.text = Html.fromHtml(headersString)
-                    }
-                    tvBody.text = httpInformation.requestBodyFormat
-                }
-            }
-        }
+    private val monitorDetailViewModel by lazy(mode = LazyThreadSafetyMode.NONE) {
+        ViewModelProvider(requireActivity())[MonitorDetailViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -60,7 +47,18 @@ internal class MonitorRequestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        monitorDetailViewModel.init()
+        monitorDetailViewModel.recordLiveData.observe(viewLifecycleOwner) { httpInformation ->
+            if (httpInformation != null) {
+                val headersString = httpInformation.getRequestHeadersString(true)
+                if (headersString.isBlank()) {
+                    tvHeaders.visibility = View.GONE
+                } else {
+                    tvHeaders.visibility = View.VISIBLE
+                    tvHeaders.text = Html.fromHtml(headersString)
+                }
+                tvBody.text = httpInformation.requestBodyFormat
+            }
+        }
     }
 
 }

@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 class MainActivity : AppCompatActivity() {
 
-    private val okHttpClient by lazy {
+    private val okHttpClient by lazy(mode = LazyThreadSafetyMode.NONE) {
         OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             .build()
     }
 
-    private val apiServiceFirst by lazy {
+    private val apiServiceFirst by lazy(mode = LazyThreadSafetyMode.NONE) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://httpbin.org")
             .addConverterFactory(GsonConverterFactory.create())
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         retrofit.create(ApiServiceFirst::class.java)
     }
 
-    private val apiServiceSecond by lazy {
+    private val apiServiceSecond by lazy(mode = LazyThreadSafetyMode.NONE) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://restapi.amap.com/v3/")
             .addConverterFactory(GsonConverterFactory.create())

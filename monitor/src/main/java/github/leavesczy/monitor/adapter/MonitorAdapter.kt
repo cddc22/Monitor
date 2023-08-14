@@ -37,7 +37,7 @@ internal class MonitorAdapter(private val context: Context) :
 
     private val asyncListDiffer = AsyncListDiffer(this, MonitorDiffUtilItemCallback())
 
-    var clickListener: OnItemClickListener? = null
+    var clickListener: OnMonitorItemClickListener? = null
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MonitorViewHolder {
         return MonitorViewHolder(viewGroup)
@@ -102,17 +102,13 @@ internal class MonitorAdapter(private val context: Context) :
         asyncListDiffer.submitList(dataList)
     }
 
-    fun clear() {
-        asyncListDiffer.submitList(null)
-    }
-
     private fun getColor(@ColorRes id: Int): Int {
         return ContextCompat.getColor(context, id)
     }
 
 }
 
-internal interface OnItemClickListener {
+internal interface OnMonitorItemClickListener {
 
     fun onClick(position: Int, model: HttpInformation)
 
